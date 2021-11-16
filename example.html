@@ -1,0 +1,47 @@
+<script>
+    // @NOTE: these headers are needed to avoid CORS issues
+    var requestOptions = {
+        method: 'GET',
+        headers: {
+            accept: '*/*',
+            'accept-language': 'en-AU,en-US;q=0.9,en;q=0.8',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'cross-site',
+        },
+        referrerPolicy: 'strict-origin-when-cross-origin',
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'omit',
+        redirect: 'follow',
+    };
+
+    // Fetch the ticker - asx name array from github
+    fetch(
+        'https://raw.githubusercontent.com/jordiup/asx-tickers/main/tickers-with-name.min.json',
+        requestOptions,
+    )
+        .then((response) => response.json())
+        .then((result) => {
+            // console.log('result', result);
+            result.forEach((element) => {
+                // console.log(element);
+                let asxTickerList = document.getElementById('asxTickerList');
+                let newHTMLEl = document.createElement('option');
+                newHTMLEl.innerHTML = element;
+
+                asxTickerList.appendChild(newHTMLEl);
+            });
+        })
+        .catch((error) => console.log('error', error));
+</script>
+<div>
+    <input
+        name="ASX-Company-Code"
+        id="ASX-Company-Code"
+        list="asxTickerList"
+        class="form-field w-input"
+        placeholder="e.g. CBA - COMMONWEALTH BANK OF AUSTRALIA."
+    />
+    <datalist id="asxTickerList"></datalist>
+</div>
